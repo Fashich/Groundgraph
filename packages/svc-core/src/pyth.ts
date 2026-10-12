@@ -90,8 +90,20 @@ export class PushFeedReader {
 }
 
 export class HermesAuthError extends Error {
-  constructor(public status: number) {
-    super(`Hermes rejected the request (HTTP ${status}). Since the Pyth Core upgrade Hermes needs PYTH_API_KEY; the push-feed source works without a key.`);
+  constructor(
+    public status: number,
+    /** response body, kept for the operator: a valid key can still be refused a feed it has no grant for */
+    public detail = '',
+  ) {
+    super(
+      `Hermes rejected the request (HTTP ${status}). Since the Pyth Core upgrade Hermes needs PYTH_API_KEY; the push-feed source works without a key.` +
+        (detail ? ` Response: ${detail.slice(0, 200)}` : ''),
+    );
+  }
+
+  /** Feed id named by a "Not entitled: feed <id>" answer (the key is valid but has no grant for that feed), lower case without 0x. */
+  get deniedFeedId(): string | undefined {
+    return /not entitled: feed (?:0x)?([0-9a-f]{64})/i.exec(this.detail)?.[1]?.toLowerCase();
   }
 }
 
@@ -142,7 +154,12 @@ export class HermesClient {
     const headers: Record<string, string> = { accept: 'application/json' };
     if (this.opts.apiKey) headers.authorization = `Bearer ${this.opts.apiKey}`;
     const res = await this.f(`${this.base}${path}?${qs.toString()}`, { headers, signal: AbortSignal.timeout(this.opts.timeoutMs ?? 8000) });
-    if (res.status === 401 || res.status === 403) throw new HermesAuthError(res.status);
+    if (res.status === 401 || res.status === 403) {
+      const detail = await Promise.resolve()
+        .then(() => res.text())
+        .catch(() => '');
+      throw new HermesAuthError(res.status, detail);
+    }
     if (!res.ok) throw new Error(`Hermes ${path} failed: HTTP ${res.status}`);
     return (await res.json()) as HermesResponse;
   }
@@ -164,10 +181,14 @@ export class HermesClient {
 
 /** Latest-price source: Hermes when an API key is configured, otherwise the on-chain push feeds; Hermes failures fall back to push. */
 export class OraclePriceService {
+  /** feeds the Hermes key has no grant for: asked from the on-chain push feeds instead, without retrying Hermes */
+  private denied = new Set<string>();
+
   constructor(
     private push: PushFeedReader,
     private hermes?: HermesClient,
     private onFallback?: (err: unknown) => void,
+    private onFeedDenied?: (feedIdHex: string) => void,
   ) {}
 
   get primary(): 'hermes' | 'push-feed' {
@@ -175,15 +196,32 @@ export class OraclePriceService {
   }
 
   async latest(feedIds: string[]): Promise<Map<string, PriceReading>> {
+    const norm = (id: string) => id.replace(/^0x/, '').toLowerCase();
+    const out = new Map<string, PriceReading>();
     if (this.hermes) {
-      try {
-        const got = await this.hermes.latest(feedIds);
-        if (got.size > 0) return got;
-      } catch (err) {
-        this.onFallback?.(err);
+      // A key may be granted only some feeds. When Hermes names a feed it refuses, remember it and ask again for the rest,
+      // at most once per refused feed; any other failure falls back to the push feeds for everything.
+      for (let attempt = 0; attempt <= feedIds.length; attempt++) {
+        const ids = feedIds.filter((id) => !this.denied.has(norm(id)));
+        if (ids.length === 0) break;
+        try {
+          for (const [k, v] of await this.hermes.latest(ids)) out.set(k, v);
+          break;
+        } catch (err) {
+          const bad = err instanceof HermesAuthError ? err.deniedFeedId : undefined;
+          if (bad && ids.some((id) => norm(id) === bad)) {
+            this.denied.add(bad);
+            this.onFeedDenied?.(bad);
+            continue;
+          }
+          this.onFallback?.(err);
+          break;
+        }
       }
     }
-    return this.push.latest(feedIds);
+    const missing = feedIds.filter((id) => !out.has(norm(id)));
+    if (missing.length > 0) for (const [k, v] of await this.push.latest(missing)) if (!out.has(k)) out.set(k, v);
+    return out;
   }
 }
 

@@ -23,7 +23,7 @@ Seeded markets (all Close markets, created by the bootstrap script; addresses ar
 
 | # | Question | Settles (UTC) | Market account |
 |---|---|---|---|
-| 1 | SOL above or below $106 | Oct 12 (about 45 min after creation) | `AcBWWSzRnuAzc8WineEXbE6AtSYLBcikM2XdbkebRByV` |
+| 1 | SOL above or below $106 | Oct 12, **settled ABOVE** by the keeper (SOL closed at $107.66) | `AcBWWSzRnuAzc8WineEXbE6AtSYLBcikM2XdbkebRByV` |
 | 2 | ETH above or below $2,540 (dynamic fee) | Oct 12 | `2sK4wT7b2HR1CzStS5KSzVzic8UFpScnCY5d5ZydGcH5` |
 | 3 | BTC above or below $80,800 | Oct 13 | `GFhsvxdAaKznDAuTpjW5R2ctPTn2TqLmDy4dRyBvSAi8` |
 | 4 | SOL above or below $111 (dynamic fee) | Oct 13 | `DcH1gZ95dnpJw5ns7NZ4tACuQUsXSsLAQYd5UjAdJmvG` |
@@ -33,8 +33,11 @@ Seeded markets (all Close markets, created by the bootstrap script; addresses ar
 | 8 | ETH above or below $2,600 (dynamic fee) | Oct 31 | `CT8P9JBnnqxRACr2Mv5BjzstoiL6vrcMaEE528gFFi3J` |
 | 9 | SOL above or below $115 (dynamic fee) | Nov 14 | `8HfWHGami1mn1kiej3iPxnR3GEA9rpDDj1ynXQncLVB5` |
 | 10 | BTC above or below $85,000 | Nov 14 | `6T2GCwrEGA31WHiAgkDGymH9Jau7yyd4k3rFVHAR6ZZS` |
+| 11 | SOL above or below $108 | Oct 12, 18:58 UTC (35 minute demo market) | `GLrRTU3NhGxDqTWKoRCjSnYFKccUmNQvssYcLR2MRLSt` |
+| 12 | ETH above or below $2,510 (dynamic fee) | Oct 12, 19:03 UTC (40 minute demo market) | `3hwJDKTAcboK6YFAatPbAFMiRetkFMp5Sm7Qdab3jbSr` |
+| 13 | BTC above or below $82,500 | Oct 12, 19:08 UTC (45 minute demo market) | `8gUaTbEXM9AxSuJscuR94LbK749k542PJc8qv6hh6gCM` |
 
-The short-dated markets exercise the settlement path (settled by the keeper, or voided with a $0.50 refund when no valid oracle update arrives, see Honest scope); the Oct 31 and Nov 14 markets stay open for review.
+Market 1 is a live proof of the full path: at its settlement time the keeper fetched the signed Pyth update, posted it through the Pyth receiver and called `settle_close` ([transaction `61QDvJ55...`](https://explorer.solana.com/tx/61QDvJ55ryyTZufPj6EYhW9WX9Da8pecVtg5Tou3T9R8YtBshCYhwLitjzKJfmVb1sxNH2mPGhjK3x9BW8vNt2Q9?cluster=devnet)). The other short-dated markets exercise the same path, or the void path with a $0.50 refund when no valid oracle update arrives (see Honest scope); the Oct 31 and Nov 14 markets stay open for review.
 Anyone can create more from the Create screen (devnet minimum duration: 30 minutes).
 
 ## Screenshots
@@ -149,7 +152,7 @@ Frontend only, against a mock API: `pnpm --filter @groundgraph/web dev:mock`.
 | API | `pnpm --filter @groundgraph/api test` | 142 pass, including a cross-service end to end |
 | Indexer | `pnpm --filter @groundgraph/indexer test` | 62 pass |
 | Keeper | `pnpm --filter @groundgraph/keeper test` | 76 pass |
-| Shared packages | `pnpm --filter @groundgraph/svc-core test`, `@groundgraph/db` | 50 and 7 pass |
+| Shared packages | `pnpm --filter @groundgraph/svc-core test`, `@groundgraph/db` | 52 and 7 pass |
 | Web unit | `pnpm --filter @groundgraph/web test` | 157 pass |
 | Web end to end (Playwright, fake wallet, mock API) | `pnpm --filter @groundgraph/web test:e2e` | 49 pass at 1440, 834 and 390 px |
 | Scorer | `python -m pytest tests -q` in `services/scorer` | 235 pass |
@@ -168,7 +171,7 @@ Full detail in the [model card](services/scorer/MODEL_CARD.md).
 
 - **Devnet only, unaudited.** Test USDC has no value. The upgrade authority and admin are single devnet keys. See the [threat model](docs/THREAT_MODEL.md) for residual risks.
 - **Demo data is labelled.** Without a Helius key the scorer runs on a synthetic world, so the radar, flagged wallets and track record are demo data. The app shows a "Demo data" ribbon whenever that is the case. Markets, prices, trades and settlements are real devnet data.
-- **Pyth keys and settlement reliability.** Pyth Hermes and Benchmarks now require an API key (Pyth lists a free trial at pythdata.app/signup). With `PYTH_API_KEY` the keeper fetches the signed update for the exact settlement time and settles any of the six feeds. Without a key it can only use the on-chain devnet push feeds, which is best effort: the program accepts a price published within 60 seconds after `settle_ts`, and those feeds update irregularly (on 12 Oct the SOL feed next updated 2 minutes 20 seconds after the first seeded market's settlement time, so that market missed its window). A market that cannot be settled is voided one hour after `settle_ts` and every share redeems at $0.50; funds are never stuck.
+- **Pyth keys and settlement reliability.** Pyth Hermes and Benchmarks now require an API key (Pyth lists a free trial at pythdata.app/signup). With `PYTH_API_KEY` the keeper fetches the signed update for the exact settlement time and settles the feeds the key is granted; the trial key used for the demo covered SOL, ETH and BTC only, and the keeper logs a warning for each refused feed and keeps reading its price from the on-chain push feed. Without a key it can only use the on-chain devnet push feeds, which is best effort: the program accepts a price published within 60 seconds after `settle_ts`, and those feeds update irregularly (on 12 Oct the SOL feed next updated 2 minutes 20 seconds after market 1's settlement time, so keyless settlement of that market missed its window). A market that cannot be settled is voided one hour after `settle_ts` and every share redeems at $0.50; funds are never stuck.
 - **Region limits.** The code default geofence blocks the US and sanctioned countries for buying and creating; the generated devnet `.env` only blocks sanctioned countries (CU, IR, KP, SY) because test USDC has no value. Sells, merges and redeems are never blocked.
 - **Not in this version:** Touch markets, adding liquidity after launch, per-user guards, the admin app, practice mode, credits and i18n. The program reserves the touch and guard fields and rejects them with `NotEnabledInThisVersion`.
 - **Known gaps:** share balances follow program events only (wallet-to-wallet transfers of outcome tokens are not tracked); LP fee earnings are not computed per position; the Docker images were written and their install layout rehearsed, but no Docker daemon was available while building.

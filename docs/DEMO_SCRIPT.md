@@ -35,7 +35,7 @@ Open Create. Pick SOL, a target, a settlement time 30 minutes out, base fee tier
 Submit and sign. The new market appears in the list within a few seconds.
 
 **2:30 - Settlement and redeem (20 s)**
-Open Positions and pick a market that has already resolved. With the keeper running on a `PYTH_API_KEY`, the keeper posted the Pyth update and called `settle_close`, and the winning side shows a Redeem button at 1 USDC per share. Without a key, an unsettled market is voided one hour after its settlement time and both sides redeem at $0.50 per share; say so on camera, it is the designed safety net.
+Open Positions and pick a market that has already resolved (market 1 settled ABOVE on devnet; trade a short demo market beforehand to hold a position in it). With the keeper running on a `PYTH_API_KEY`, the keeper posted the Pyth update and called `settle_close`, and the winning side shows a Redeem button at 1 USDC per share. Without a key, an unsettled market is voided one hour after its settlement time and both sides redeem at $0.50 per share; say so on camera, it is the designed safety net.
 Redeem and show the receipt. Mention that merge returns a complete set at any time before settlement.
 
 **2:50 - Close (10 s)**

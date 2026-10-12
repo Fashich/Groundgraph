@@ -120,6 +120,16 @@ describe('HermesClient', () => {
     await expect(new HermesClient({ baseUrl: 'https://hermes.example', fetchImpl: fetchStub(401) }).latest([SOL])).rejects.toThrow(/PYTH_API_KEY/);
   });
 
+  it('exposes the refused feed id when the key has no grant for a feed', async () => {
+    const JUP = '0a0408d619e9380abad35060f9192039ed5042fa6f82301d0e48bb52be830996';
+    const f = (async () => new Response(`Not entitled: feed ${JUP} (no grant accepts this feed (asset type 'crypto', instrument type 'spot'))`, { status: 403 })) as unknown as typeof fetch;
+    const err = await new HermesClient({ baseUrl: 'https://hermes.example', apiKey: 'k', fetchImpl: f }).latest([SOL, JUP]).catch((e) => e);
+    expect(err).toBeInstanceOf(HermesAuthError);
+    expect((err as HermesAuthError).deniedFeedId).toBe(JUP);
+    expect((err as HermesAuthError).message).toMatch(/Not entitled/);
+    expect(new HermesAuthError(401).deniedFeedId).toBeUndefined();
+  });
+
   it('reports other HTTP failures', async () => {
     await expect(new HermesClient({ baseUrl: 'https://hermes.example', fetchImpl: fetchStub(503) }).latest([SOL])).rejects.toThrow(/HTTP 503/);
   });
@@ -141,6 +151,33 @@ describe('OraclePriceService', () => {
     expect(s.primary).toBe('hermes');
     expect((await s.latest([SOL])).size).toBe(1);
     expect(note).toBeInstanceOf(HermesAuthError);
+  });
+
+  it('keeps using Hermes for the feeds a partial key is granted and the push feeds for the rest', async () => {
+    const JUP = '0a0408d619e9380abad35060f9192039ed5042fa6f82301d0e48bb52be830996';
+    const calls: string[][] = [];
+    const reading = (id: string) => ({ feedIdHex: id, price: 2, conf: 0, expo: -8, rawPrice: 2n, rawConf: 0n, publishTs: 2, source: 'hermes' as const });
+    const hermes = {
+      latest: async (ids: string[]) => {
+        calls.push(ids);
+        if (ids.includes(JUP)) throw new HermesAuthError(403, `Not entitled: feed ${JUP} (no grant accepts this feed)`);
+        return new Map(ids.map((i) => [i, reading(i)]));
+      },
+    } as unknown as HermesClient;
+    const denied: string[] = [];
+    let fallbacks = 0;
+    const s = new OraclePriceService(pushWith([SOL, JUP]), hermes, () => fallbacks++, (id) => denied.push(id));
+
+    const first = await s.latest([SOL, JUP]);
+    expect(first.get(SOL)!.source).toBe('hermes');
+    expect(first.get(JUP)!.source).toBe('push-feed');
+    expect(calls).toEqual([[SOL, JUP], [SOL]]);
+    expect(denied).toEqual([JUP]);
+    expect(fallbacks).toBe(0);
+
+    await s.latest([SOL, JUP]);
+    expect(calls[2]).toEqual([SOL]); // the refused feed is not asked from Hermes again
+    expect(denied).toEqual([JUP]);
   });
 });
 

@@ -63,7 +63,12 @@ async function main(): Promise<void> {
   // ---- price sources: this is the documented, explicit settlement switch ----------------------------------------
   const hermes = cfg.PYTH_API_KEY ? new HermesClient({ baseUrl: cfg.PYTH_HERMES_URL, apiKey: cfg.PYTH_API_KEY }) : undefined;
   const push = new PushFeedReader(connection);
-  const oracle = new OraclePriceService(push, hermes, (err) => log.warn({ err: (err as Error).message }, 'Hermes unavailable, using on-chain push feeds'));
+  const oracle = new OraclePriceService(
+    push,
+    hermes,
+    (err) => log.warn({ err: (err as Error).message }, 'Hermes unavailable, using on-chain push feeds'),
+    (feedIdHex) => log.warn({ feedIdHex }, 'the Pyth key has no grant for this feed: its prices come from the on-chain push feed and its markets cannot be settled through Hermes'),
+  );
   metrics.settlementMode.set({ mode: cfg.settlementMode }, 1);
   metrics.oracleSource.set({ source: oracle.primary }, 1);
   if (cfg.settlementMode === 'push-feed') {
