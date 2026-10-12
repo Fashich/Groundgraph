@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "groundgraph-scorer"
+version = "0.1.0"
+description = "Groundgraph smart money scorer: wallet graph, GraphSAGE, explainable scores, market radar, track record"
+requires-python = ">=3.11,<3.13"
+readme = "README.md"
+# Exact pins. torch is installed from the CPU wheel index in the Dockerfile
+# (https://download.pytorch.org/whl/cpu); PyPI wheels also work for local development.
+dependencies = [
+  "numpy==2.4.6",
+  "scipy==1.17.1",
+  "scikit-learn==1.9.1",
+  "networkx==3.6.1",
+  "python-louvain==0.16",
+  "psycopg[binary]==3.3.6",
+  "torch==2.14.1",
+  "requests==2.32.5",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest==9.1.1",
+  "responses==0.25.8",
+]
+
+[tool.setuptools.packages.find]
+include = ["scorer*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = [".", "tests"]
+addopts = "-q"
+markers = [
+  "db: integration tests that need the shared Postgres server",
+  "slow: end-to-end tests that train a model",
+]
