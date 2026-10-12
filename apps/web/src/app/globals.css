@@ -1,0 +1,19 @@
+@import 'tailwindcss';
+@import '@groundgraph/ui/tokens.css';
+@source "../../../../packages/ui/src";
+
+/* App-level layout helpers that are not part of the shared design vocabulary. */
+@layer components {
+  .gg-skip { position: fixed; left: 12px; top: -64px; z-index: 200; padding: 10px 16px; border-radius: 10px; background: var(--color-brand); color: #fff; font-weight: 600; transition: top 0.2s; }
+  .gg-skip:focus { top: 12px; }
+  .gg-page { max-width: 1320px; margin: 0 auto; padding: clamp(24px, 4vw, 48px) clamp(16px, 4vw, 40px); }
+  .gg-section { max-width: 1240px; margin: 0 auto; padding: clamp(56px, 8vw, 120px) clamp(16px, 4vw, 40px) 0; }
+  .gg-h2 { font-family: var(--font-display); font-weight: 600; font-size: clamp(30px, 4vw, 52px); line-height: 1.05; letter-spacing: -0.03em; text-wrap: balance; }
+  .gg-panel { background: var(--gg-surface); border: 1px solid var(--gg-border); border-radius: 20px; }
+  .gg-input { height: 48px; width: 100%; border-radius: 12px; border: 1px solid rgba(155, 107, 255, 0.24); background: rgba(255, 255, 255, 0.03); padding: 0 14px; outline: none; transition: border-color 0.2s, box-shadow 0.3s; }
+  .gg-input:focus { border-color: rgba(44, 230, 214, 0.7); box-shadow: 0 0 0 3px rgba(44, 230, 214, 0.16); }
+  .gg-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .gg-table th { text-align: left; font: 500 11px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-faint); padding: 12px 14px; border-bottom: 1px solid rgba(155, 107, 255, 0.14); white-space: nowrap; }
+  .gg-table td { padding: 12px 14px; border-bottom: 1px solid rgba(155, 107, 255, 0.07); vertical-align: middle; }
+  .gg-table tbody tr:last-child td { border-bottom: none; }
+}
