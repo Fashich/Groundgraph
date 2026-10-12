@@ -1,0 +1,19 @@
+# Single public origin for the web app and the live-update WebSocket.
+# `/api/*` and `/og/*` are proxied by the web container (Next rewrites), so only `/ws` needs its own route here.
+{
+	auto_https off
+	admin off
+}
+
+:80 {
+	encode zstd gzip
+
+	@ws path /ws /ws/*
+	handle @ws {
+		reverse_proxy api:8787
+	}
+
+	handle {
+		reverse_proxy web:3000
+	}
+}
