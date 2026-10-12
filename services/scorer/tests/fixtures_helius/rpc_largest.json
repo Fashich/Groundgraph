@@ -1,0 +1,23 @@
+{
+ "jsonrpc": "2.0",
+ "id": 1,
+ "result": {
+  "context": {
+   "slot": 1
+  },
+  "value": [
+   {
+    "address": "TokAcc1",
+    "amount": "100",
+    "decimals": 5,
+    "uiAmount": 0.001
+   },
+   {
+    "address": "TokAcc2",
+    "amount": "50",
+    "decimals": 5,
+    "uiAmount": 0.0005
+   }
+  ]
+ }
+}

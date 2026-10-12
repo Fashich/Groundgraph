@@ -1,0 +1,33 @@
+[package]
+name = "groundgraph"
+version = "0.1.0"
+description = "Groundgraph: non-custodial ABOVE/BELOW price markets on Solana (Pyth settled)"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[lib]
+crate-type = ["cdylib"]
+name = "groundgraph"
+
+[features]
+default = ["no-log-ix-name", "custom-panic"]
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-log-ix-name = []
+idl-build = ["anchor-lang/idl-build"]
+anchor-debug = []
+custom-heap = []
+custom-panic = []
+
+[dependencies]
+anchor-lang = { version = "=1.2.1", features = ["init-if-needed"] }
+pyth-solana-receiver-sdk = { version = "=2.0.0" }
+
+[dev-dependencies]
+proptest = "=1.12.0"
+serde_json = "1"
+sha2 = "0.10"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(target_os, values("solana"))'] }

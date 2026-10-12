@@ -15,14 +15,23 @@ __pycache__/
 !.env.example
 *-keypair.json
 id.json
-.keys/
+*.zip
 *.log
 .DS_Store
 Thumbs.db
 .vercel/
+.keys/
+# Not part of the project: design handoff, build prompts, local notes
 groundgraph_mvp_handoff/
 Groundgraph prototype*
-*.zip
 _local/
 *progress-notes*
 CLAUDE_CODE_PROMPT.md
+scripts/.bootstrap-state.json
+dump.rdb
+
+# Generated test artifacts
+.next-e2e/
+apps/web/e2e-screenshots/
+playwright-report/
+test-results/

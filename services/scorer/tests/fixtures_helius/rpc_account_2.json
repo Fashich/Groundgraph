@@ -1,0 +1,21 @@
+{
+ "jsonrpc": "2.0",
+ "id": 1,
+ "result": {
+  "context": {
+   "slot": 1
+  },
+  "value": {
+   "data": {
+    "program": "spl-token",
+    "parsed": {
+     "info": {
+      "owner": "Owner2BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+      "mint": "m"
+     },
+     "type": "account"
+    }
+   }
+  }
+ }
+}

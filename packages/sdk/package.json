@@ -1,0 +1,29 @@
+{
+  "name": "@groundgraph/sdk",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Shared math, Solana program client and API contract types for Groundgraph",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./api-types": "./src/api-types.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "sync-idl": "cp ../../programs/groundgraph/idl/groundgraph.json src/idl/groundgraph.json"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "fast-check": "^4.10.2",
+    "litesvm": "^1.6.0",
+    "typescript": "^5.8.0",
+    "vitest": "^5.0.3"
+  },
+  "dependencies": {
+    "@solana/spl-token": "0.4.15",
+    "@solana/web3.js": "1.99.0"
+  }
+}

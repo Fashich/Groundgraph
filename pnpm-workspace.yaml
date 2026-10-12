@@ -1,0 +1,7 @@
+packages:
+  - "apps/*"
+  - "services/api"
+  - "services/indexer"
+  - "services/keeper"
+  - "packages/*"
+  - "scripts"

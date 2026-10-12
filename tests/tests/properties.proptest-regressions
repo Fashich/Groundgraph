@@ -1,0 +1,7 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc 7a265b76b26557e9b8e8563f4fca58cf71d03f6b782aa4108e79ba1101572828 # shrinks to p0 = 300, base_fee = 50, dynamic = false, ops = [Buy { who: true, side: false, amount: 1535894190, dt: 0 }, Buy { who: true, side: false, amount: 2939626726, dt: 0 }, Buy { who: true, side: false, amount: 2382939388, dt: 0 }, Buy { who: true, side: false, amount: 898108132, dt: 0 }, Buy { who: true, side: false, amount: 1906352004, dt: 0 }, Buy { who: true, side: false, amount: 337415858, dt: 0 }], res = AboveWins
