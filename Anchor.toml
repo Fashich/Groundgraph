@@ -1,0 +1,21 @@
+[toolchain]
+
+[features]
+resolution = true
+skip-lint = false
+
+[programs.localnet]
+groundgraph = "5W8BS9j9ZFH7Uscjq2Sh7tU5SVmvf7Ay3fJMDjTnRPCC"
+
+[programs.devnet]
+groundgraph = "5W8BS9j9ZFH7Uscjq2Sh7tU5SVmvf7Ay3fJMDjTnRPCC"
+
+[provider]
+cluster = "devnet"
+wallet = ".keys/deployer.json"
+
+[scripts]
+# LiteSVM 0.18 needs rustc >= 1.97.1; the program itself builds with the stock toolchain (see docs/VERSIONS.md).
+test = "cargo +1.99.0 test -p groundgraph-tests"
+
+[hooks]

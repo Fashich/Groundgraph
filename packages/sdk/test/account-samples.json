@@ -1,0 +1,203 @@
+{
+  "config": {
+    "decoded": {
+      "admin": "5nJpsDvFRzApK6qWPmWRXHBaEBa2ob5WCzUjHhNhSQaK",
+      "bump": 255,
+      "maxConfBps": 50,
+      "maxDurationSecs": 15552000,
+      "maxFeeBps": 300,
+      "maxStalenessSecs": 60,
+      "minDurationSecs": 1800,
+      "minLiquidity": "100000000",
+      "paused": false,
+      "protocolFeeShareBps": 0,
+      "tradingCloseSecs": 300,
+      "treasury": "6FeZtVjmPJSKuLort6S2BiRi2QAriMNmGbziNFHGWZs6",
+      "usdcMint": "6izJumZHLchqVanDNRMcr9fqpcmgd7g2LDWhSoBqaj9w"
+    },
+    "hex": "9b0caae01efacc82470a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a504e0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b51550c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c5600002c0100e1f505000000000807000000000000004eed00000000003c00000032002c01000000ff"
+  },
+  "discriminators": {
+    "Config": "9b0caae01efacc82",
+    "ConfigUpdated": "28f1e67a0b13c6c2",
+    "FeedAllowlist": "18dc4a3995158bd8",
+    "FeedUpdated": "c83cbe56f7093251",
+    "LiquidityChanged": "8484c1d60c63281c",
+    "Market": "dbbed53700e3c69a",
+    "MarketCreated": "58b882e7e254063a",
+    "Merged": "3981f1499c297efb",
+    "Redeemed": "0e1db7471fa56b26",
+    "Settled": "e8d228118e7c91ee",
+    "Trade": "18feda98fd2b1251",
+    "Voided": "2030a35f475b56b3"
+  },
+  "events": {
+    "LiquidityChanged": {
+      "decoded": {
+        "isAdd": false,
+        "lpAmount": "11",
+        "market": "AViF5x7Qy8qvDWZ3H2kQ9dcvCMaHuE46q7ea5CSQA1Ts",
+        "usdc": "12",
+        "wallet": "Ay3z7DvvvT7RokXPmMfzp4s3zaB7ozMMtjAZ9kLyEAke"
+      },
+      "hex": "8484c1d60c63281c8d1414141414141414141414141414141414141414141414141414141414144e941515151515151515151515151515151515151515151515151515151515154f0b000000000000000c0000000000000000"
+    },
+    "MarketCreated": {
+      "decoded": {
+        "aboveMint": "2xGNjb19i6Zkmf1PToxqYfimSsy5M1HwqKNppPwH1Sr1",
+        "baseFeeBps": 100,
+        "belowMint": "3Rc7krpffQqGMtyjx8tSD6xuF6ZuFmbCtvtotwqr5c8n",
+        "creator": "YF9fmYbr9mDzw6KzqC3ZMzN4EAbciQAeUpsakDZnxyg",
+        "dynamicFee": true,
+        "feedIdHex": "030c151e273039424b545d666f78818a939ca5aeb7c0c9d2dbe4edf6ff08111a",
+        "kind": "close",
+        "liquidity": "500000000",
+        "lpMint": "3twrn8eBcj6mx8x6STp2sYD33KAjAXtTxYQnyVkR9mRV",
+        "market": "AViF5x7Qy8qvDWZ3H2kQ9dcvCMaHuE46q7ea5CSQA1Ts",
+        "p0Bps": 2500,
+        "settleTs": 1800086400,
+        "targetExpo": -8,
+        "targetPrice": "25000000000",
+        "tradingEndTs": 1800082800,
+        "vault": "2UvdiKBdknJFBR32yV3EtEUdefNFSEzgmhrqjr2hwHZA"
+      },
+      "hex": "58b882e7e254063a8d1414141414141414141414141414141414141414141414141414141414144e080101010101010101010101010101010101010101010101010101010101015b030c151e273039424b545d666f78818a939ca5aeb7c0c9d2dbe4edf6ff08111a00ba1dd205000000f8ffffff0080234b6b0000000070154b6b000000006400010065cd1d00000000c4091d0404040404040404040404040404040404040404040404040404040404045e240505050505050505050505050505050505050505050505050505050505055f2b0606060606060606060606060606060606060606060606060606060606065c1603030303030303030303030303030303030303030303030303030303030359"
+    },
+    "Merged": {
+      "decoded": {
+        "amount": "9",
+        "market": "AViF5x7Qy8qvDWZ3H2kQ9dcvCMaHuE46q7ea5CSQA1Ts",
+        "wallet": "Ay3z7DvvvT7RokXPmMfzp4s3zaB7ozMMtjAZ9kLyEAke"
+      },
+      "hex": "3981f1499c297efb8d1414141414141414141414141414141414141414141414141414141414144e941515151515151515151515151515151515151515151515151515151515154f0900000000000000"
+    },
+    "Redeemed": {
+      "decoded": {
+        "market": "AViF5x7Qy8qvDWZ3H2kQ9dcvCMaHuE46q7ea5CSQA1Ts",
+        "shares": "5",
+        "side": "above",
+        "usdc": "5",
+        "wallet": "Ay3z7DvvvT7RokXPmMfzp4s3zaB7ozMMtjAZ9kLyEAke"
+      },
+      "hex": "0e1db7471fa56b268d1414141414141414141414141414141414141414141414141414141414144e941515151515151515151515151515151515151515151515151515151515154f0005000000000000000500000000000000"
+    },
+    "Settled": {
+      "decoded": {
+        "expo": -8,
+        "lpClaim": "99",
+        "market": "AViF5x7Qy8qvDWZ3H2kQ9dcvCMaHuE46q7ea5CSQA1Ts",
+        "outcome": "below",
+        "price": "24900000000",
+        "publishTs": 1800086401
+      },
+      "hex": "e8d228118e7c91ee8d1414141414141414141414141414141414141414141414141414141414144e0200d927cc05000000f8ffffff81234b6b000000006300000000000000"
+    },
+    "Trade": {
+      "decoded": {
+        "feeBps": 100,
+        "feeUsdc": "100000",
+        "isBuy": true,
+        "market": "AViF5x7Qy8qvDWZ3H2kQ9dcvCMaHuE46q7ea5CSQA1Ts",
+        "priceAfterBps": 4321,
+        "reserveAbove": "123",
+        "reserveBelow": "456",
+        "shares": "18500000",
+        "side": "below",
+        "ts": 1800000123,
+        "usdc": "10000000",
+        "wallet": "Ay3z7DvvvT7RokXPmMfzp4s3zaB7ozMMtjAZ9kLyEAke"
+      },
+      "hex": "18feda98fd2b12518d1414141414141414141414141414141414141414141414141414141414144e941515151515151515151515151515151515151515151515151515151515154f01018096980000000000a0491a0100000000a0860100000000006400e11000007b00000000000000c8010000000000007bd2496b00000000"
+    },
+    "Voided": {
+      "decoded": {
+        "lpClaim": "77",
+        "market": "AViF5x7Qy8qvDWZ3H2kQ9dcvCMaHuE46q7ea5CSQA1Ts"
+      },
+      "hex": "2030a35f475b56b38d1414141414141414141414141414141414141414141414141414141414144e4d00000000000000"
+    }
+  },
+  "feed": {
+    "decoded": {
+      "bump": 253,
+      "enabled": true,
+      "expo": -8,
+      "feedIdHex": "030c151e273039424b545d666f78818a939ca5aeb7c0c9d2dbe4edf6ff08111a",
+      "symbol": "SOL/USD"
+    },
+    "hex": "18dc4a3995158bd8030c151e273039424b545d666f78818a939ca5aeb7c0c9d2dbe4edf6ff08111a07000000534f4c2f555344f8ffffff01fd"
+  },
+  "marketOpen": {
+    "decoded": {
+      "aboveMint": "2xGNjb19i6Zkmf1PToxqYfimSsy5M1HwqKNppPwH1Sr1",
+      "baseFeeBps": 100,
+      "belowMint": "3Rc7krpffQqGMtyjx8tSD6xuF6ZuFmbCtvtotwqr5c8n",
+      "bump": 254,
+      "collateralMint": "21ath3N7oU2jbB4gVA7eDoEVrSmRXUhRi6LrfJ88s8GP",
+      "completeSets": "1234567890",
+      "creator": "YF9fmYbr9mDzw6KzqC3ZMzN4EAbciQAeUpsakDZnxyg",
+      "direction": "none",
+      "dynamicFee": false,
+      "emaImpactBps": 37,
+      "emaTs": 1800000500,
+      "feePool": "4321000",
+      "feedIdHex": "030c151e273039424b545d666f78818a939ca5aeb7c0c9d2dbe4edf6ff08111a",
+      "kind": "close",
+      "lpClaimRemaining": "0",
+      "lpMint": "3twrn8eBcj6mx8x6STp2sYD33KAjAXtTxYQnyVkR9mRV",
+      "lpSupplyRemaining": "0",
+      "nonce": "18446744073709551615",
+      "openTs": 1800000000,
+      "outcome": "none",
+      "reserveAbove": "600000000",
+      "reserveBelow": "400000000",
+      "settleExpo": 0,
+      "settlePrice": "0",
+      "settlePublishTs": 0,
+      "settleTs": 1800086400,
+      "status": "open",
+      "targetExpo": -8,
+      "targetPrice": "9223372036854775807",
+      "tradingEndTs": 1800082800,
+      "vault": "2UvdiKBdknJFBR32yV3EtEUdefNFSEzgmhrqjr2hwHZA"
+    },
+    "hex": "dbbed53700e3c69a080101010101010101010101010101010101010101010101010101010101015bffffffffffffffff0f0202020202020202020202020202020202020202020202020202020202025816030303030303030303030303030303030303030303030303030303030303591d0404040404040404040404040404040404040404040404040404040404045e240505050505050505050505050505050505050505050505050505050505055f2b0606060606060606060606060606060606060606060606060606060606065c0000030c151e273039424b545d666f78818a939ca5aeb7c0c9d2dbe4edf6ff08111affffffffffffff7ff8ffffff00d2496b0000000070154b6b0000000080234b6b00000000640000d2029649000000000046c323000000000084d71700000000e8ee41000000000025000000f4d3496b000000000000000000000000000000000000000000000000000000000000000000000000000000000000fe"
+  },
+  "marketSettled": {
+    "decoded": {
+      "aboveMint": "2xGNjb19i6Zkmf1PToxqYfimSsy5M1HwqKNppPwH1Sr1",
+      "baseFeeBps": 100,
+      "belowMint": "3Rc7krpffQqGMtyjx8tSD6xuF6ZuFmbCtvtotwqr5c8n",
+      "bump": 254,
+      "collateralMint": "21ath3N7oU2jbB4gVA7eDoEVrSmRXUhRi6LrfJ88s8GP",
+      "completeSets": "1234567890",
+      "creator": "YF9fmYbr9mDzw6KzqC3ZMzN4EAbciQAeUpsakDZnxyg",
+      "direction": "none",
+      "dynamicFee": true,
+      "emaImpactBps": 37,
+      "emaTs": 1800000500,
+      "feePool": "4321000",
+      "feedIdHex": "030c151e273039424b545d666f78818a939ca5aeb7c0c9d2dbe4edf6ff08111a",
+      "kind": "close",
+      "lpClaimRemaining": "604321000",
+      "lpMint": "3twrn8eBcj6mx8x6STp2sYD33KAjAXtTxYQnyVkR9mRV",
+      "lpSupplyRemaining": "500000000",
+      "nonce": "42",
+      "openTs": 1800000000,
+      "outcome": "above",
+      "reserveAbove": "600000000",
+      "reserveBelow": "400000000",
+      "settleExpo": -8,
+      "settlePrice": "25100000000",
+      "settlePublishTs": 1800086412,
+      "settleTs": 1800086400,
+      "status": "settled",
+      "targetExpo": -8,
+      "targetPrice": "25000000000",
+      "tradingEndTs": 1800082800,
+      "vault": "2UvdiKBdknJFBR32yV3EtEUdefNFSEzgmhrqjr2hwHZA"
+    },
+    "hex": "dbbed53700e3c69a080101010101010101010101010101010101010101010101010101010101015b2a000000000000000f0202020202020202020202020202020202020202020202020202020202025816030303030303030303030303030303030303030303030303030303030303591d0404040404040404040404040404040404040404040404040404040404045e240505050505050505050505050505050505050505050505050505050505055f2b0606060606060606060606060606060606060606060606060606060606065c0000030c151e273039424b545d666f78818a939ca5aeb7c0c9d2dbe4edf6ff08111a00ba1dd205000000f8ffffff00d2496b0000000070154b6b0000000080234b6b00000000640001d2029649000000000046c323000000000084d71700000000e8ee41000000000025000000f4d3496b000000000101009b13d805000000f8ffffff8c234b6b00000000e8340524000000000065cd1d00000000fe",
+    "size": 364
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "cluster": "devnet",
+  "programId": "5W8BS9j9ZFH7Uscjq2Sh7tU5SVmvf7Ay3fJMDjTnRPCC",
+  "deployed": true,
+  "deployTx": "4avUg3tsDsfJTw2negkHggi2BA9ejd2YU5Yp7KHJAtv3vVJQT98yty3NYUFgckm6j8Lhj3dCcasYrXW5hiNukVfe",
+  "slot": 510333684,
+  "deployer": "nkefPKPYNkR9unadBftY54Ta4PhSC5ofQu2vNx1nkMw",
+  "upgradeAuthority": "nkefPKPYNkR9unadBftY54Ta4PhSC5ofQu2vNx1nkMw",
+  "deployedAt": "2026-10-12T17:06:58Z",
+  "programSizeBytes": 266216,
+  "programDataLengthBytes": 280000,
+  "maxLenBytes": 280000,
+  "binarySha256": "afd8f6859327a8a07f5d8866f10814f73d196362291e45de77b848ee92119390",
+  "verified": "on-chain program bytes equal target/deploy/groundgraph.so (sha256)"
+}
