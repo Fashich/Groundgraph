@@ -1,0 +1,20 @@
+# Build context is the repository root. Keep secrets, build output and dependency folders out of every image.
+**/node_modules
+**/.next
+**/.turbo
+**/dist
+**/coverage
+target
+.anchor
+test-ledger
+.git
+.keys
+.env
+.env.*
+!.env.example
+*-keypair.json
+id.json
+dump.rdb
+*.log
+.venv
+**/__pycache__

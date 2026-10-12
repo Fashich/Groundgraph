@@ -1,0 +1,19 @@
+{
+  "name": "groundgraph",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Groundgraph: non-custodial price markets and a smart money radar on Solana",
+  "packageManager": "pnpm@10.28.0",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.0",
+    "typescript": "^5.8.0"
+  }
+}
