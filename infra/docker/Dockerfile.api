@@ -1,0 +1,44 @@
+# syntax=docker/dockerfile:1.7
+#
+# Groundgraph api service image.
+# Build context MUST be the repository root:
+#   docker build -f infra/docker/Dockerfile.api -t groundgraph-api .
+#
+# Workspace packages export TypeScript source (`main` = ./src/index.ts), so the image runs the service with tsx
+# instead of a compiled bundle. Configuration is environment only; see services/README.md for every variable.
+
+FROM node:22-slim AS base
+ENV PNPM_HOME=/pnpm
+ENV PATH=$PNPM_HOME:$PATH
+RUN corepack enable && corepack prepare pnpm@10.28.0 --activate
+WORKDIR /repo
+
+# Stage 1: only the manifests and the lockfile, so the dependency layer is rebuilt only when they change.
+FROM base AS manifests
+COPY . /ctx
+RUN mkdir /out && cd /ctx \
+ && find . -type f \( -name package.json -o -name pnpm-lock.yaml -o -name pnpm-workspace.yaml -o -name .npmrc \) -not -path '*/node_modules/*' -print0 \
+    | tar --null -T - -cf - | tar -xf - -C /out
+
+# Stage 2: install the workspace closure of this service (with the lockfile frozen).
+FROM base AS deps
+COPY --from=manifests /out/ ./
+RUN --mount=type=cache,id=gg-pnpm-store,target=/pnpm/store \
+    pnpm install --frozen-lockfile --store-dir /pnpm/store --filter "@groundgraph/api..."
+
+# Stage 3: sources on top of the installed tree. programs/groundgraph/deployments/devnet.json is read by the SDK for the default program id.
+FROM deps AS app
+COPY tsconfig.base.json ./
+COPY packages ./packages
+COPY services/api ./services/api
+COPY programs/groundgraph/deployments ./programs/groundgraph/deployments
+
+FROM app AS runtime
+ENV NODE_ENV=production
+WORKDIR /repo/services/api
+USER node
+EXPOSE 8787
+HEALTHCHECK --interval=15s --timeout=5s --start-period=40s --retries=4 \
+  CMD node -e "fetch('http://127.0.0.1:'+(process.env.API_PORT||8787)+'/health').then(r=>process.exit(r.ok?0:1),()=>process.exit(1))"
+# One process, no wrapper: SIGTERM reaches the service's graceful shutdown handler directly.
+CMD ["node", "--import", "tsx", "src/index.ts"]

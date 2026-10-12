@@ -1,0 +1,161 @@
+# Groundgraph, self-hosted on one machine. No paid provider, no card, no third-party hosting.
+#
+#   cp .env.example .env          # then fill in the values listed in docs/SELF_HOSTING.md
+#   docker compose up -d --build
+#   open http://localhost:8080
+#
+# Only the reverse proxy is published (bound to 127.0.0.1 unless PROXY_BIND says otherwise). Postgres, Redis and the
+# internal metrics ports stay on the private compose network.
+
+name: groundgraph
+
+x-service-env: &service-env
+  NODE_ENV: production
+  LOG_LEVEL: ${LOG_LEVEL:-info}
+  SOLANA_CLUSTER: ${SOLANA_CLUSTER:-devnet}
+  RPC_URL: ${RPC_URL:-https://api.devnet.solana.com}
+  RPC_WS_URL: ${RPC_WS_URL:-wss://api.devnet.solana.com}
+  PROGRAM_ID: ${PROGRAM_ID:-}
+  USDC_MINT: ${USDC_MINT:-}
+  DATABASE_URL: postgres://groundgraph:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}@postgres:5432/groundgraph
+  REDIS_URL: redis://redis:6379
+  RUN_MIGRATIONS: "true"
+  DEMO_MODE: ${DEMO_MODE:-false}
+  PYTH_API_KEY: ${PYTH_API_KEY:-}
+  HELIUS_API_KEY: ${HELIUS_API_KEY:-}
+  METRICS_TOKEN: ${METRICS_TOKEN:-}
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: groundgraph
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: groundgraph
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U groundgraph -d groundgraph"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.api
+    restart: unless-stopped
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    environment:
+      <<: *service-env
+      SESSION_SECRET: ${SESSION_SECRET:?set SESSION_SECRET in .env (openssl rand -hex 32)}
+      WEB_ORIGIN: ${PUBLIC_URL:-http://localhost:8080}
+      PUBLIC_API_URL: ${PUBLIC_URL:-http://localhost:8080}/api
+      TRUST_PROXY: "true"
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+      BLOCKED_COUNTRIES: ${BLOCKED_COUNTRIES:-US}
+      FAUCET_KEYPAIR: /run/secrets/faucet.json
+    volumes:
+      - ./.keys/faucet.json:/run/secrets/faucet.json:ro
+    expose: ["8787"]
+
+  indexer:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.indexer
+    restart: unless-stopped
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    environment:
+      <<: *service-env
+    expose: ["9102"]
+
+  keeper:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.keeper
+    restart: unless-stopped
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    environment:
+      <<: *service-env
+      KEEPER_KEYPAIR: /run/secrets/keeper.json
+      KEEPER_SETTLEMENT_ORACLE: ${KEEPER_SETTLEMENT_ORACLE:-auto}
+      KEEPER_PUSH_FEED_ASSETS: ${KEEPER_PUSH_FEED_ASSETS:-SOL,ETH}
+    volumes:
+      - ./.keys/keeper.json:/run/secrets/keeper.json:ro
+    expose: ["9101"]
+
+  scorer:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.scorer
+    restart: unless-stopped
+    depends_on:
+      postgres: { condition: service_healthy }
+      api: { condition: service_started }
+    environment:
+      DATABASE_URL: postgres://groundgraph:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}@postgres:5432/groundgraph
+      # synthetic needs DEMO_MODE=true (rows are labelled "Demo data"); helius needs HELIUS_API_KEY (free tier, no card).
+      SCORER_SOURCE: ${SCORER_SOURCE:-synthetic}
+      DEMO_MODE: ${DEMO_MODE:-false}
+      HELIUS_API_KEY: ${HELIUS_API_KEY:-}
+      PYTH_API_KEY: ${PYTH_API_KEY:-}
+      MODEL_CARD_PATH: /data/MODEL_CARD.md
+    volumes:
+      - scorerdata:/data
+
+  web:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.web
+      args:
+        API_ORIGIN: http://api:8787
+        NEXT_PUBLIC_API_URL: /api
+        NEXT_PUBLIC_WS_URL: ""
+        NEXT_PUBLIC_SOLANA_CLUSTER: ${SOLANA_CLUSTER:-devnet}
+        NEXT_PUBLIC_RPC_URL: ${NEXT_PUBLIC_RPC_URL:-https://api.devnet.solana.com}
+        NEXT_PUBLIC_USDC_MINT: ${USDC_MINT:-}
+        NEXT_PUBLIC_PROGRAM_ID: ${PROGRAM_ID:-}
+        NEXT_PUBLIC_SITE_URL: ${PUBLIC_URL:-http://localhost:8080}
+    restart: unless-stopped
+    depends_on:
+      api: { condition: service_started }
+    environment:
+      BLOCKED_COUNTRIES: ${BLOCKED_COUNTRIES:-US}
+    expose: ["3000"]
+
+  proxy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on:
+      web: { condition: service_started }
+      api: { condition: service_started }
+    ports:
+      - "${PROXY_BIND:-127.0.0.1}:${PROXY_PORT:-8080}:80"
+    volumes:
+      - ./infra/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddydata:/data
+
+volumes:
+  pgdata:
+  redisdata:
+  scorerdata:
+  caddydata:
