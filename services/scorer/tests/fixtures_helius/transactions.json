@@ -1,0 +1,243 @@
+{
+ "wallet": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+ "funder": "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
+ "txs": {
+  "swap_buy_sol_with_usdc": {
+   "signature": "sigBuySol",
+   "type": "SWAP",
+   "source": "JUPITER",
+   "timestamp": 1790000000,
+   "feePayer": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+   "fee": 5000,
+   "slot": 300000000,
+   "nativeTransfers": [],
+   "tokenTransfers": [
+    {
+     "fromUserAccount": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+     "toUserAccount": "5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1",
+     "fromTokenAccount": "ta-7xKX",
+     "toTokenAccount": "ta-5Q54",
+     "tokenAmount": 1500.0,
+     "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+     "tokenStandard": "Fungible"
+    },
+    {
+     "fromUserAccount": "5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1",
+     "toUserAccount": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+     "fromTokenAccount": "ta-5Q54",
+     "toTokenAccount": "ta-7xKX",
+     "tokenAmount": 10.0,
+     "mint": "So11111111111111111111111111111111111111112",
+     "tokenStandard": "Fungible"
+    }
+   ],
+   "accountData": [],
+   "transactionError": null,
+   "events": {}
+  },
+  "swap_sell_jup_for_sol_native": {
+   "signature": "sigSellJup",
+   "type": "SWAP",
+   "source": "JUPITER",
+   "timestamp": 1790000100,
+   "feePayer": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+   "fee": 5000,
+   "slot": 300000100,
+   "nativeTransfers": [
+    {
+     "fromUserAccount": "5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1",
+     "toUserAccount": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+     "amount": 2000000000
+    },
+    {
+     "fromUserAccount": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+     "toUserAccount": "5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1",
+     "amount": 5000
+    }
+   ],
+   "tokenTransfers": [
+    {
+     "fromUserAccount": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+     "toUserAccount": "5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1",
+     "fromTokenAccount": "ta-7xKX",
+     "toTokenAccount": "ta-5Q54",
+     "tokenAmount": 2000.0,
+     "mint": "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN",
+     "tokenStandard": "Fungible"
+    }
+   ],
+   "accountData": [],
+   "transactionError": null,
+   "events": {}
+  },
+  "swap_unknown_token": {
+   "signature": "sigUnknown",
+   "type": "SWAP",
+   "source": "JUPITER",
+   "timestamp": 1790000200,
+   "feePayer": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+   "fee": 5000,
+   "slot": 300000200,
+   "nativeTransfers": [],
+   "tokenTransfers": [
+    {
+     "fromUserAccount": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+     "toUserAccount": "5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1",
+     "fromTokenAccount": "ta-7xKX",
+     "toTokenAccount": "ta-5Q54",
+     "tokenAmount": 500.0,
+     "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+     "tokenStandard": "Fungible"
+    },
+    {
+     "fromUserAccount": "5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1",
+     "toUserAccount": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+     "fromTokenAccount": "ta-5Q54",
+     "toTokenAccount": "ta-7xKX",
+     "tokenAmount": 99999.0,
+     "mint": "UnknownMint1111111111111111111111111111111111",
+     "tokenStandard": "Fungible"
+    }
+   ],
+   "accountData": [],
+   "transactionError": null,
+   "events": {}
+  },
+  "swap_dust": {
+   "signature": "sigDust",
+   "type": "SWAP",
+   "source": "JUPITER",
+   "timestamp": 1790000300,
+   "feePayer": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+   "fee": 5000,
+   "slot": 300000300,
+   "nativeTransfers": [],
+   "tokenTransfers": [
+    {
+     "fromUserAccount": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+     "toUserAccount": "5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1",
+     "fromTokenAccount": "ta-7xKX",
+     "toTokenAccount": "ta-5Q54",
+     "tokenAmount": 3.0,
+     "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+     "tokenStandard": "Fungible"
+    },
+    {
+     "fromUserAccount": "5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1",
+     "toUserAccount": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+     "fromTokenAccount": "ta-5Q54",
+     "toTokenAccount": "ta-7xKX",
+     "tokenAmount": 5.0,
+     "mint": "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN",
+     "tokenStandard": "Fungible"
+    }
+   ],
+   "accountData": [],
+   "transactionError": null,
+   "events": {}
+  },
+  "swap_failed": {
+   "signature": "sigFailed",
+   "type": "SWAP",
+   "source": "JUPITER",
+   "timestamp": 1790000400,
+   "feePayer": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+   "fee": 5000,
+   "slot": 300000400,
+   "nativeTransfers": [],
+   "tokenTransfers": [
+    {
+     "fromUserAccount": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+     "toUserAccount": "5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1",
+     "fromTokenAccount": "ta-7xKX",
+     "toTokenAccount": "ta-5Q54",
+     "tokenAmount": 900.0,
+     "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+     "tokenStandard": "Fungible"
+    },
+    {
+     "fromUserAccount": "5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1",
+     "toUserAccount": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+     "fromTokenAccount": "ta-5Q54",
+     "toTokenAccount": "ta-7xKX",
+     "tokenAmount": 6.0,
+     "mint": "So11111111111111111111111111111111111111112",
+     "tokenStandard": "Fungible"
+    }
+   ],
+   "accountData": [],
+   "transactionError": {
+    "InstructionError": [
+     0,
+     "Custom"
+    ]
+   },
+   "events": {}
+  },
+  "transfer_funding_in": {
+   "signature": "sigFund",
+   "type": "TRANSFER",
+   "source": "SYSTEM_PROGRAM",
+   "timestamp": 1789568000,
+   "feePayer": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+   "fee": 5000,
+   "slot": 300000000,
+   "nativeTransfers": [
+    {
+     "fromUserAccount": "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
+     "toUserAccount": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+     "amount": 3000000000
+    }
+   ],
+   "tokenTransfers": [],
+   "accountData": [],
+   "transactionError": null,
+   "events": {}
+  },
+  "transfer_dust_in": {
+   "signature": "sigDustIn",
+   "type": "TRANSFER",
+   "source": "SYSTEM_PROGRAM",
+   "timestamp": 1789481600,
+   "feePayer": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+   "fee": 5000,
+   "slot": 300000600,
+   "nativeTransfers": [
+    {
+     "fromUserAccount": "DustSender11111111111111111111111111111111",
+     "toUserAccount": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+     "amount": 1000
+    }
+   ],
+   "tokenTransfers": [],
+   "accountData": [],
+   "transactionError": null,
+   "events": {}
+  },
+  "transfer_out": {
+   "signature": "sigOut",
+   "type": "TRANSFER",
+   "source": "SYSTEM_PROGRAM",
+   "timestamp": 1790000500,
+   "feePayer": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+   "fee": 5000,
+   "slot": 300000500,
+   "nativeTransfers": [
+    {
+     "fromUserAccount": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+     "toUserAccount": "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
+     "amount": 1000000000
+    },
+    {
+     "fromUserAccount": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+     "toUserAccount": "11111111111111111111111111111111",
+     "amount": 2039280
+    }
+   ],
+   "tokenTransfers": [],
+   "accountData": [],
+   "transactionError": null,
+   "events": {}
+  }
+ }
+}
