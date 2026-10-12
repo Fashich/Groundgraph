@@ -1,0 +1,2547 @@
+{
+  "address": "5W8BS9j9ZFH7Uscjq2Sh7tU5SVmvf7Ay3fJMDjTnRPCC",
+  "metadata": {
+    "name": "groundgraph",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Groundgraph: non-custodial ABOVE/BELOW price markets on Solana (Pyth settled)"
+  },
+  "instructions": [
+    {
+      "name": "allow_feed",
+      "discriminator": [
+        157,
+        181,
+        89,
+        163,
+        171,
+        97,
+        78,
+        44
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "feed",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  102,
+                  101,
+                  101,
+                  100
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "feed_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "feed_id",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "name": "expo",
+          "type": "i32"
+        }
+      ]
+    },
+    {
+      "name": "buy",
+      "discriminator": [
+        102,
+        6,
+        61,
+        18,
+        1,
+        218,
+        235,
+        234
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "market",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  114,
+                  107,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market.creator",
+                "account": "Market"
+              },
+              {
+                "kind": "account",
+                "path": "market.nonce",
+                "account": "Market"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true
+        },
+        {
+          "name": "outcome_mint",
+          "writable": true
+        },
+        {
+          "name": "user_usdc",
+          "writable": true
+        },
+        {
+          "name": "user_outcome",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "side",
+          "type": {
+            "defined": {
+              "name": "Side"
+            }
+          }
+        },
+        {
+          "name": "usdc_in",
+          "type": "u64"
+        },
+        {
+          "name": "min_shares_out",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "create_market",
+      "discriminator": [
+        103,
+        226,
+        97,
+        235,
+        200,
+        188,
+        251,
+        254
+      ],
+      "accounts": [
+        {
+          "name": "creator",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "feed",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  102,
+                  101,
+                  101,
+                  100
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "params.feed_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "collateral_mint"
+        },
+        {
+          "name": "market",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  114,
+                  107,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "creator"
+              },
+              {
+                "kind": "arg",
+                "path": "params.nonce"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market"
+              }
+            ]
+          }
+        },
+        {
+          "name": "above_mint",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  98,
+                  111,
+                  118,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market"
+              }
+            ]
+          }
+        },
+        {
+          "name": "below_mint",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  101,
+                  108,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market"
+              }
+            ]
+          }
+        },
+        {
+          "name": "lp_mint",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  112
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market"
+              }
+            ]
+          }
+        },
+        {
+          "name": "creator_usdc",
+          "writable": true
+        },
+        {
+          "name": "creator_above",
+          "writable": true
+        },
+        {
+          "name": "creator_below",
+          "writable": true
+        },
+        {
+          "name": "creator_lp",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": {
+              "name": "CreateMarketParams"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "disallow_feed",
+      "discriminator": [
+        195,
+        218,
+        162,
+        229,
+        127,
+        229,
+        24,
+        250
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "feed",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  102,
+                  101,
+                  101,
+                  100
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "feed_id"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "feed_id",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "initialize_config",
+      "discriminator": [
+        208,
+        127,
+        21,
+        1,
+        194,
+        190,
+        196,
+        70
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "usdc_mint"
+        },
+        {
+          "name": "program_data",
+          "docs": [
+            "compared to `authority` in the handler (a hand parse avoids pulling bincode/serde into the binary)."
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  66,
+                  228,
+                  181,
+                  161,
+                  139,
+                  250,
+                  129,
+                  211,
+                  164,
+                  123,
+                  113,
+                  5,
+                  94,
+                  30,
+                  217,
+                  41,
+                  165,
+                  238,
+                  185,
+                  252,
+                  42,
+                  123,
+                  158,
+                  131,
+                  178,
+                  123,
+                  131,
+                  61,
+                  166,
+                  153,
+                  175,
+                  241
+                ]
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                2,
+                168,
+                246,
+                145,
+                78,
+                136,
+                161,
+                176,
+                226,
+                16,
+                21,
+                62,
+                247,
+                99,
+                174,
+                43,
+                0,
+                194,
+                185,
+                61,
+                22,
+                193,
+                36,
+                210,
+                192,
+                83,
+                122,
+                16,
+                4,
+                128,
+                0,
+                0
+              ]
+            }
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": {
+              "name": "InitializeConfigParams"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "merge",
+      "discriminator": [
+        148,
+        141,
+        236,
+        47,
+        174,
+        126,
+        69,
+        111
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "market",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  114,
+                  107,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market.creator",
+                "account": "Market"
+              },
+              {
+                "kind": "account",
+                "path": "market.nonce",
+                "account": "Market"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true
+        },
+        {
+          "name": "above_mint",
+          "writable": true
+        },
+        {
+          "name": "below_mint",
+          "writable": true
+        },
+        {
+          "name": "user_above",
+          "writable": true
+        },
+        {
+          "name": "user_below",
+          "writable": true
+        },
+        {
+          "name": "user_usdc",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "redeem",
+      "discriminator": [
+        184,
+        12,
+        86,
+        149,
+        70,
+        196,
+        97,
+        225
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "market",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  114,
+                  107,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market.creator",
+                "account": "Market"
+              },
+              {
+                "kind": "account",
+                "path": "market.nonce",
+                "account": "Market"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true
+        },
+        {
+          "name": "outcome_mint",
+          "writable": true
+        },
+        {
+          "name": "user_outcome",
+          "writable": true
+        },
+        {
+          "name": "user_usdc",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "side",
+          "type": {
+            "defined": {
+              "name": "Side"
+            }
+          }
+        },
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "remove_liquidity",
+      "discriminator": [
+        80,
+        85,
+        209,
+        72,
+        24,
+        206,
+        177,
+        108
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "market",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  114,
+                  107,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market.creator",
+                "account": "Market"
+              },
+              {
+                "kind": "account",
+                "path": "market.nonce",
+                "account": "Market"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true
+        },
+        {
+          "name": "lp_mint",
+          "writable": true
+        },
+        {
+          "name": "user_lp",
+          "writable": true
+        },
+        {
+          "name": "user_usdc",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "lp_amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "sell",
+      "discriminator": [
+        51,
+        230,
+        133,
+        164,
+        1,
+        127,
+        131,
+        173
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "market",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  114,
+                  107,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market.creator",
+                "account": "Market"
+              },
+              {
+                "kind": "account",
+                "path": "market.nonce",
+                "account": "Market"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true
+        },
+        {
+          "name": "outcome_mint",
+          "writable": true
+        },
+        {
+          "name": "user_outcome",
+          "writable": true
+        },
+        {
+          "name": "user_usdc",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "side",
+          "type": {
+            "defined": {
+              "name": "Side"
+            }
+          }
+        },
+        {
+          "name": "shares_in",
+          "type": "u64"
+        },
+        {
+          "name": "min_usdc_out",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "settle_close",
+      "discriminator": [
+        151,
+        229,
+        199,
+        24,
+        177,
+        153,
+        171,
+        49
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "docs": [
+            "Anyone can settle; the signer only pays the transaction fee."
+          ],
+          "signer": true
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "market",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  114,
+                  107,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market.creator",
+                "account": "Market"
+              },
+              {
+                "kind": "account",
+                "path": "market.nonce",
+                "account": "Market"
+              }
+            ]
+          }
+        },
+        {
+          "name": "lp_mint"
+        },
+        {
+          "name": "price_update",
+          "docs": [
+            "Must be owned by the Pyth Receiver program (enforced by `Account<PriceUpdateV2>`)."
+          ]
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "update_config",
+      "discriminator": [
+        29,
+        158,
+        252,
+        191,
+        10,
+        83,
+        219,
+        99
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": {
+              "name": "UpdateConfigParams"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "void_market",
+      "discriminator": [
+        243,
+        175,
+        46,
+        124,
+        95,
+        101,
+        39,
+        69
+      ],
+      "accounts": [
+        {
+          "name": "caller",
+          "signer": true
+        },
+        {
+          "name": "market",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  114,
+                  107,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market.creator",
+                "account": "Market"
+              },
+              {
+                "kind": "account",
+                "path": "market.nonce",
+                "account": "Market"
+              }
+            ]
+          }
+        },
+        {
+          "name": "lp_mint"
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Config",
+      "discriminator": [
+        155,
+        12,
+        170,
+        224,
+        30,
+        250,
+        204,
+        130
+      ]
+    },
+    {
+      "name": "FeedAllowlist",
+      "discriminator": [
+        24,
+        220,
+        74,
+        57,
+        149,
+        21,
+        139,
+        216
+      ]
+    },
+    {
+      "name": "Market",
+      "discriminator": [
+        219,
+        190,
+        213,
+        55,
+        0,
+        227,
+        198,
+        154
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "ConfigUpdated",
+      "discriminator": [
+        40,
+        241,
+        230,
+        122,
+        11,
+        19,
+        198,
+        194
+      ]
+    },
+    {
+      "name": "FeedUpdated",
+      "discriminator": [
+        200,
+        60,
+        190,
+        86,
+        247,
+        9,
+        50,
+        81
+      ]
+    },
+    {
+      "name": "LiquidityChanged",
+      "discriminator": [
+        132,
+        132,
+        193,
+        214,
+        12,
+        99,
+        40,
+        28
+      ]
+    },
+    {
+      "name": "MarketCreated",
+      "discriminator": [
+        88,
+        184,
+        130,
+        231,
+        226,
+        84,
+        6,
+        58
+      ]
+    },
+    {
+      "name": "Merged",
+      "discriminator": [
+        57,
+        129,
+        241,
+        73,
+        156,
+        41,
+        126,
+        251
+      ]
+    },
+    {
+      "name": "Redeemed",
+      "discriminator": [
+        14,
+        29,
+        183,
+        71,
+        31,
+        165,
+        107,
+        38
+      ]
+    },
+    {
+      "name": "Settled",
+      "discriminator": [
+        232,
+        210,
+        40,
+        17,
+        142,
+        124,
+        145,
+        238
+      ]
+    },
+    {
+      "name": "Trade",
+      "discriminator": [
+        24,
+        254,
+        218,
+        152,
+        253,
+        43,
+        18,
+        81
+      ]
+    },
+    {
+      "name": "Voided",
+      "discriminator": [
+        32,
+        48,
+        163,
+        95,
+        71,
+        91,
+        86,
+        179
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "Paused",
+      "msg": "Trading and market creation are paused"
+    },
+    {
+      "code": 6001,
+      "name": "NotEnabledInThisVersion",
+      "msg": "This feature is not enabled in this program version"
+    },
+    {
+      "code": 6002,
+      "name": "NotAdmin",
+      "msg": "Signer is not the config admin"
+    },
+    {
+      "code": 6003,
+      "name": "NotUpgradeAuthority",
+      "msg": "Signer is not the program upgrade authority"
+    },
+    {
+      "code": 6004,
+      "name": "InvalidConfig",
+      "msg": "Invalid config parameter"
+    },
+    {
+      "code": 6005,
+      "name": "InvalidCollateralMint",
+      "msg": "Collateral mint must be an initialized 6 decimal SPL Token mint"
+    },
+    {
+      "code": 6006,
+      "name": "InvalidSymbol",
+      "msg": "Feed symbol is empty or too long"
+    },
+    {
+      "code": 6007,
+      "name": "FeedNotAllowed",
+      "msg": "Price feed is not on the allowlist"
+    },
+    {
+      "code": 6008,
+      "name": "InvalidTarget",
+      "msg": "Target price must be positive and the exponent in [-18, 0]"
+    },
+    {
+      "code": 6009,
+      "name": "InvalidBaseFee",
+      "msg": "Base fee must be 50, 100 or 200 bps"
+    },
+    {
+      "code": 6010,
+      "name": "InvalidOpeningPrice",
+      "msg": "Opening price must be between 2% and 98%"
+    },
+    {
+      "code": 6011,
+      "name": "LiquidityTooLow",
+      "msg": "Liquidity is below the configured minimum"
+    },
+    {
+      "code": 6012,
+      "name": "DurationTooShort",
+      "msg": "Settlement is sooner than the minimum duration"
+    },
+    {
+      "code": 6013,
+      "name": "DurationTooLong",
+      "msg": "Settlement is later than the maximum duration"
+    },
+    {
+      "code": 6014,
+      "name": "WrongCollateralMint",
+      "msg": "Collateral mint does not match the config"
+    },
+    {
+      "code": 6015,
+      "name": "WrongMint",
+      "msg": "Token account or mint does not match the market"
+    },
+    {
+      "code": 6016,
+      "name": "WrongVault",
+      "msg": "Vault does not match the market"
+    },
+    {
+      "code": 6017,
+      "name": "WrongTokenAccount",
+      "msg": "Token account owner or mint is wrong"
+    },
+    {
+      "code": 6018,
+      "name": "MarketNotOpen",
+      "msg": "Market is not open"
+    },
+    {
+      "code": 6019,
+      "name": "TradingEnded",
+      "msg": "Trading has ended for this market"
+    },
+    {
+      "code": 6020,
+      "name": "ZeroAmount",
+      "msg": "Amount must be greater than zero"
+    },
+    {
+      "code": 6021,
+      "name": "BelowMinTrade",
+      "msg": "Buy is below the 1 USDC minimum"
+    },
+    {
+      "code": 6022,
+      "name": "SellTooSmall",
+      "msg": "Sell returns less than the 0.01 USDC minimum"
+    },
+    {
+      "code": 6023,
+      "name": "SlippageExceeded",
+      "msg": "Slippage tolerance exceeded"
+    },
+    {
+      "code": 6024,
+      "name": "MathOverflow",
+      "msg": "Arithmetic overflow"
+    },
+    {
+      "code": 6025,
+      "name": "ReserveTooLarge",
+      "msg": "Reserves would exceed the supported maximum"
+    },
+    {
+      "code": 6026,
+      "name": "ReserveEmpty",
+      "msg": "Pool reserves are empty"
+    },
+    {
+      "code": 6027,
+      "name": "TooEarlyToSettle",
+      "msg": "Settlement time has not been reached"
+    },
+    {
+      "code": 6028,
+      "name": "TooEarlyToVoid",
+      "msg": "Void grace period has not elapsed"
+    },
+    {
+      "code": 6029,
+      "name": "WrongFeedId",
+      "msg": "Price update feed id does not match the market"
+    },
+    {
+      "code": 6030,
+      "name": "InsufficientVerification",
+      "msg": "Price update is not fully verified"
+    },
+    {
+      "code": 6031,
+      "name": "PriceStale",
+      "msg": "Price update was published before the settlement time"
+    },
+    {
+      "code": 6032,
+      "name": "PriceOutsideWindow",
+      "msg": "Price update was published after the settlement window"
+    },
+    {
+      "code": 6033,
+      "name": "NonPositivePrice",
+      "msg": "Oracle price must be positive"
+    },
+    {
+      "code": 6034,
+      "name": "ConfidenceTooWide",
+      "msg": "Oracle confidence interval is too wide"
+    },
+    {
+      "code": 6035,
+      "name": "ExponentOutOfRange",
+      "msg": "Oracle exponent is out of range"
+    },
+    {
+      "code": 6036,
+      "name": "NotResolved",
+      "msg": "Market is not settled or voided"
+    },
+    {
+      "code": 6037,
+      "name": "NotWinningSide",
+      "msg": "Only the winning side can be redeemed"
+    },
+    {
+      "code": 6038,
+      "name": "AmountTooSmall",
+      "msg": "Amount is too small to pay out"
+    },
+    {
+      "code": 6039,
+      "name": "InvalidLpAmount",
+      "msg": "Invalid LP amount"
+    },
+    {
+      "code": 6040,
+      "name": "InvariantViolated",
+      "msg": "Accounting invariant violated"
+    }
+  ],
+  "types": [
+    {
+      "name": "Config",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "treasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "usdc_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "protocol_fee_share_bps",
+            "docs": [
+              "Share of trade fees routed to the treasury. Reserved, unused in Phase 1."
+            ],
+            "type": "u16"
+          },
+          {
+            "name": "max_fee_bps",
+            "type": "u16"
+          },
+          {
+            "name": "min_liquidity",
+            "type": "u64"
+          },
+          {
+            "name": "min_duration_secs",
+            "type": "i64"
+          },
+          {
+            "name": "max_duration_secs",
+            "type": "i64"
+          },
+          {
+            "name": "max_staleness_secs",
+            "docs": [
+              "Width of the accepted settlement window: publish_time in [settle_ts, settle_ts + max_staleness_secs]."
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "max_conf_bps",
+            "type": "u16"
+          },
+          {
+            "name": "trading_close_secs",
+            "docs": [
+              "Buys stop this many seconds before settle_ts (mainnet default 3600)."
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "paused",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ConfigUpdated",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "treasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "usdc_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "protocol_fee_share_bps",
+            "type": "u16"
+          },
+          {
+            "name": "max_fee_bps",
+            "type": "u16"
+          },
+          {
+            "name": "min_liquidity",
+            "type": "u64"
+          },
+          {
+            "name": "min_duration_secs",
+            "type": "i64"
+          },
+          {
+            "name": "max_duration_secs",
+            "type": "i64"
+          },
+          {
+            "name": "max_staleness_secs",
+            "type": "u32"
+          },
+          {
+            "name": "max_conf_bps",
+            "type": "u16"
+          },
+          {
+            "name": "trading_close_secs",
+            "type": "u32"
+          },
+          {
+            "name": "paused",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CreateMarketParams",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "nonce",
+            "type": "u64"
+          },
+          {
+            "name": "feed_id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "kind",
+            "type": {
+              "defined": {
+                "name": "MarketKind"
+              }
+            }
+          },
+          {
+            "name": "direction",
+            "type": {
+              "defined": {
+                "name": "Direction"
+              }
+            }
+          },
+          {
+            "name": "target_price",
+            "type": "i64"
+          },
+          {
+            "name": "target_expo",
+            "type": "i32"
+          },
+          {
+            "name": "settle_ts",
+            "type": "i64"
+          },
+          {
+            "name": "base_fee_bps",
+            "type": "u16"
+          },
+          {
+            "name": "dynamic_fee",
+            "type": "bool"
+          },
+          {
+            "name": "liquidity",
+            "type": "u64"
+          },
+          {
+            "name": "p0_bps",
+            "type": "u16"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Direction",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "None"
+          },
+          {
+            "name": "Up"
+          },
+          {
+            "name": "Down"
+          }
+        ]
+      }
+    },
+    {
+      "name": "FeedAllowlist",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "feed_id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "symbol",
+            "type": "string"
+          },
+          {
+            "name": "expo",
+            "type": "i32"
+          },
+          {
+            "name": "enabled",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "FeedUpdated",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "feed_id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "expo",
+            "type": "i32"
+          },
+          {
+            "name": "enabled",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "InitializeConfigParams",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "treasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "protocol_fee_share_bps",
+            "type": "u16"
+          },
+          {
+            "name": "max_fee_bps",
+            "type": "u16"
+          },
+          {
+            "name": "min_liquidity",
+            "type": "u64"
+          },
+          {
+            "name": "min_duration_secs",
+            "type": "i64"
+          },
+          {
+            "name": "max_duration_secs",
+            "type": "i64"
+          },
+          {
+            "name": "max_staleness_secs",
+            "type": "u32"
+          },
+          {
+            "name": "max_conf_bps",
+            "type": "u16"
+          },
+          {
+            "name": "trading_close_secs",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "LiquidityChanged",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "market",
+            "type": "pubkey"
+          },
+          {
+            "name": "wallet",
+            "type": "pubkey"
+          },
+          {
+            "name": "lp_amount",
+            "type": "u64"
+          },
+          {
+            "name": "usdc",
+            "type": "u64"
+          },
+          {
+            "name": "is_add",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Market",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "nonce",
+            "type": "u64"
+          },
+          {
+            "name": "collateral_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "above_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "below_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "lp_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "kind",
+            "type": {
+              "defined": {
+                "name": "MarketKind"
+              }
+            }
+          },
+          {
+            "name": "direction",
+            "type": {
+              "defined": {
+                "name": "Direction"
+              }
+            }
+          },
+          {
+            "name": "feed_id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "target_price",
+            "type": "i64"
+          },
+          {
+            "name": "target_expo",
+            "type": "i32"
+          },
+          {
+            "name": "open_ts",
+            "type": "i64"
+          },
+          {
+            "name": "trading_end_ts",
+            "type": "i64"
+          },
+          {
+            "name": "settle_ts",
+            "type": "i64"
+          },
+          {
+            "name": "base_fee_bps",
+            "type": "u16"
+          },
+          {
+            "name": "dynamic_fee",
+            "type": "bool"
+          },
+          {
+            "name": "complete_sets",
+            "docs": [
+              "Complete sets outstanding (N). While Open: vault.amount >= complete_sets + fee_pool (equality unless donated to)."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "reserve_above",
+            "type": "u64"
+          },
+          {
+            "name": "reserve_below",
+            "type": "u64"
+          },
+          {
+            "name": "fee_pool",
+            "type": "u64"
+          },
+          {
+            "name": "ema_impact_bps",
+            "type": "u32"
+          },
+          {
+            "name": "ema_ts",
+            "type": "i64"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "MarketStatus"
+              }
+            }
+          },
+          {
+            "name": "outcome",
+            "type": {
+              "defined": {
+                "name": "Outcome"
+              }
+            }
+          },
+          {
+            "name": "settle_price",
+            "type": "i64"
+          },
+          {
+            "name": "settle_expo",
+            "type": "i32"
+          },
+          {
+            "name": "settle_publish_ts",
+            "type": "i64"
+          },
+          {
+            "name": "lp_claim_remaining",
+            "type": "u64"
+          },
+          {
+            "name": "lp_supply_remaining",
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MarketCreated",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "market",
+            "type": "pubkey"
+          },
+          {
+            "name": "creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "feed_id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "target_price",
+            "type": "i64"
+          },
+          {
+            "name": "target_expo",
+            "type": "i32"
+          },
+          {
+            "name": "kind",
+            "type": {
+              "defined": {
+                "name": "MarketKind"
+              }
+            }
+          },
+          {
+            "name": "settle_ts",
+            "type": "i64"
+          },
+          {
+            "name": "trading_end_ts",
+            "type": "i64"
+          },
+          {
+            "name": "base_fee_bps",
+            "type": "u16"
+          },
+          {
+            "name": "dynamic_fee",
+            "type": "bool"
+          },
+          {
+            "name": "liquidity",
+            "type": "u64"
+          },
+          {
+            "name": "p0_bps",
+            "type": "u16"
+          },
+          {
+            "name": "above_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "below_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "lp_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "vault",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MarketKind",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Close"
+          },
+          {
+            "name": "Touch"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MarketStatus",
+      "docs": [
+        "Stored status. `TradingClosed` is derived off-chain from `trading_end_ts` and the clock."
+      ],
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Open"
+          },
+          {
+            "name": "Settled"
+          },
+          {
+            "name": "Voided"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Merged",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "market",
+            "type": "pubkey"
+          },
+          {
+            "name": "wallet",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Outcome",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "None"
+          },
+          {
+            "name": "Above"
+          },
+          {
+            "name": "Below"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PriceFeedMessage",
+      "repr": {
+        "kind": "c"
+      },
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "feed_id",
+            "docs": [
+              "`FeedId` but avoid the type alias because of compatibility issues with Anchor's `idl-build` feature."
+            ],
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "price",
+            "type": "i64"
+          },
+          {
+            "name": "conf",
+            "type": "u64"
+          },
+          {
+            "name": "exponent",
+            "type": "i32"
+          },
+          {
+            "name": "publish_time",
+            "docs": [
+              "The timestamp of this price update in seconds"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "prev_publish_time",
+            "docs": [
+              "The timestamp of the previous price update. This field is intended to allow users to",
+              "identify the single unique price update for any moment in time:",
+              "for any time t, the unique update is the one such that prev_publish_time < t <= publish_time.",
+              "",
+              "Note that there may not be such an update while we are migrating to the new message-sending logic,",
+              "as some price updates on pythnet may not be sent to other chains (because the message-sending",
+              "logic may not have triggered). We can solve this problem by making the message-sending mandatory",
+              "(which we can do once publishers have migrated over).",
+              "",
+              "Additionally, this field may be equal to publish_time if the message is sent on a slot where",
+              "where the aggregation was unsuccesful. This problem will go away once all publishers have",
+              "migrated over to a recent version of pyth-agent."
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "ema_price",
+            "type": "i64"
+          },
+          {
+            "name": "ema_conf",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PriceUpdateV2",
+      "docs": [
+        "A price update account. This account is used by the Pyth Receiver program to store a verified price update from a Pyth price feed.",
+        "It contains:",
+        "- `write_authority`: The write authority for this account. This authority can close this account to reclaim rent or update the account to contain a different price update.",
+        "- `verification_level`: The [`VerificationLevel`] of this price update. This represents how many Wormhole guardian signatures have been verified for this price update.",
+        "- `price_message`: The actual price update.",
+        "- `posted_slot`: The slot at which this price update was posted."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "write_authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "verification_level",
+            "type": {
+              "defined": {
+                "name": "VerificationLevel"
+              }
+            }
+          },
+          {
+            "name": "price_message",
+            "type": {
+              "defined": {
+                "name": "PriceFeedMessage"
+              }
+            }
+          },
+          {
+            "name": "posted_slot",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Redeemed",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "market",
+            "type": "pubkey"
+          },
+          {
+            "name": "wallet",
+            "type": "pubkey"
+          },
+          {
+            "name": "side",
+            "type": {
+              "defined": {
+                "name": "Side"
+              }
+            }
+          },
+          {
+            "name": "shares",
+            "type": "u64"
+          },
+          {
+            "name": "usdc",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Settled",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "market",
+            "type": "pubkey"
+          },
+          {
+            "name": "outcome",
+            "type": {
+              "defined": {
+                "name": "Outcome"
+              }
+            }
+          },
+          {
+            "name": "price",
+            "type": "i64"
+          },
+          {
+            "name": "expo",
+            "type": "i32"
+          },
+          {
+            "name": "publish_ts",
+            "type": "i64"
+          },
+          {
+            "name": "lp_claim",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Side",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Above"
+          },
+          {
+            "name": "Below"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Trade",
+      "docs": [
+        "`usdc` is the USDC that moved between the wallet and the vault (buy: gross amount paid including the fee;",
+        "sell: net amount received after the fee). `shares` is the outcome shares minted (buy) or burned (sell)."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "market",
+            "type": "pubkey"
+          },
+          {
+            "name": "wallet",
+            "type": "pubkey"
+          },
+          {
+            "name": "side",
+            "type": {
+              "defined": {
+                "name": "Side"
+              }
+            }
+          },
+          {
+            "name": "is_buy",
+            "type": "bool"
+          },
+          {
+            "name": "usdc",
+            "type": "u64"
+          },
+          {
+            "name": "shares",
+            "type": "u64"
+          },
+          {
+            "name": "fee_usdc",
+            "type": "u64"
+          },
+          {
+            "name": "fee_bps",
+            "type": "u16"
+          },
+          {
+            "name": "price_after_bps",
+            "type": "u32"
+          },
+          {
+            "name": "reserve_above",
+            "type": "u64"
+          },
+          {
+            "name": "reserve_below",
+            "type": "u64"
+          },
+          {
+            "name": "ts",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UpdateConfigParams",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "new_admin",
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "treasury",
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "protocol_fee_share_bps",
+            "type": {
+              "option": "u16"
+            }
+          },
+          {
+            "name": "max_fee_bps",
+            "type": {
+              "option": "u16"
+            }
+          },
+          {
+            "name": "min_liquidity",
+            "type": {
+              "option": "u64"
+            }
+          },
+          {
+            "name": "min_duration_secs",
+            "type": {
+              "option": "i64"
+            }
+          },
+          {
+            "name": "max_duration_secs",
+            "type": {
+              "option": "i64"
+            }
+          },
+          {
+            "name": "max_staleness_secs",
+            "type": {
+              "option": "u32"
+            }
+          },
+          {
+            "name": "max_conf_bps",
+            "type": {
+              "option": "u16"
+            }
+          },
+          {
+            "name": "trading_close_secs",
+            "type": {
+              "option": "u32"
+            }
+          },
+          {
+            "name": "paused",
+            "type": {
+              "option": "bool"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "VerificationLevel",
+      "docs": [
+        "Pyth price updates are bridged to all blockchains via Wormhole.",
+        "Using the price updates on another chain requires verifying the signatures of the Wormhole guardians.",
+        "The usual process is to check the signatures for two thirds of the total number of guardians, but this can be cumbersome on Solana because of the transaction size limits,",
+        "so we also allow for partial verification.",
+        "",
+        "This enum represents how much a price update has been verified:",
+        "- If `Full`, we have verified the signatures for two thirds of the current guardians.",
+        "- If `Partial`, only `num_signatures` guardian signatures have been checked.",
+        "",
+        "# Warning",
+        "Using partially verified price updates is dangerous, as it lowers the threshold of guardians that need to collude to produce a malicious price update."
+      ],
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Partial",
+            "fields": [
+              {
+                "name": "num_signatures",
+                "type": "u8"
+              }
+            ]
+          },
+          {
+            "name": "Full"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Voided",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "market",
+            "type": "pubkey"
+          },
+          {
+            "name": "lp_claim",
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ]
+}

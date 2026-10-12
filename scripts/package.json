@@ -1,0 +1,24 @@
+{
+  "name": "@groundgraph/scripts",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Devnet bootstrap, faucet and smoke test scripts for Groundgraph",
+  "scripts": {
+    "bootstrap:devnet": "tsx bootstrap-devnet.ts",
+    "faucet-usdc": "tsx faucet-usdc.ts",
+    "create-market": "tsx create-market.ts",
+    "smoke:devnet": "tsx smoke-devnet.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@groundgraph/sdk": "workspace:*",
+    "@solana/spl-token": "0.4.15",
+    "@solana/web3.js": "1.99.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "tsx": "^4.20.0",
+    "typescript": "^5.8.0"
+  }
+}

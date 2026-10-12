@@ -1,0 +1,28 @@
+[package]
+name = "groundgraph-tests"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+publish = false
+
+# Harness crate: loads the compiled program (target/deploy/groundgraph.so) into LiteSVM and drives it with
+# hand-encoded instructions (discriminators and error codes are read from the committed IDL).
+[dependencies]
+litesvm = "=0.18.0"
+solana-address = "~2.7.0"
+solana-account = "4"
+solana-clock = "~3.2.0"
+solana-instruction = "~3.5.0"
+solana-keypair = "3.1.2"
+solana-message = "4"
+solana-signer = "3"
+solana-system-interface = { version = "3.2", features = ["bincode"] }
+solana-transaction = "4"
+solana-transaction-error = "~3.4.0"
+borsh = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+base64 = "0.22"
+
+[dev-dependencies]
+proptest = "=1.12.0"

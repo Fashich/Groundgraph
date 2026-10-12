@@ -1,0 +1,33 @@
+{
+  "cluster": "devnet",
+  "programId": "5W8BS9j9ZFH7Uscjq2Sh7tU5SVmvf7Ay3fJMDjTnRPCC",
+  "market": "AcBWWSzRnuAzc8WineEXbE6AtSYLBcikM2XdbkebRByV",
+  "ok": true,
+  "steps": [
+    {
+      "name": "buy",
+      "signature": "bvArQN5YCjy7Qm1Ajsq5gZDk5tgWQ9dwxWviWhBRsdgyi8Dn36hEBBGjEh4dJLXSenfxePmM5rKqzi2vzi1C6rV",
+      "computeUnits": 22424,
+      "detail": "5.00 USDC -> 5050030 ABOVE shares"
+    },
+    {
+      "name": "sell",
+      "signature": "poFvbxW4cvVe8r8HubX2Btb4Jobu9Uj4QLT8o1WLYSrheepdELY43NViREeS1xVaAC9DDVQWKsZWgAo9beaCu6p",
+      "computeUnits": 23538,
+      "detail": "2525015 ABOVE shares -> 2.45 USDC"
+    },
+    {
+      "name": "buy",
+      "signature": "3Lwo6gkn2jgHectjqCZ2dsuMJSPVzgCb8FvtwCcKzw8LirJgqu8Ub6WcVc2G2BDKrFHLPBXCc1oain1qHAtt8cSA",
+      "computeUnits": 23919,
+      "detail": "3.00 USDC -> 116683039 BELOW shares"
+    },
+    {
+      "name": "merge",
+      "signature": "3hnaBkVriKM2hNg7rH5DEdSEva7WquWGyaeRc2YrjUb6Nvt8GYSFEXt7Z8dobh3hxEKzzTP8YXQqc8nwoffL6Y32",
+      "computeUnits": 20336,
+      "detail": "116683039 complete sets -> 116.68 USDC"
+    }
+  ],
+  "ranAt": "2026-10-12T17:08:40.879Z"
+}
