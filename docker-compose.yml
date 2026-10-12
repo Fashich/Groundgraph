@@ -17,7 +17,7 @@ x-service-env: &service-env
   RPC_WS_URL: ${RPC_WS_URL:-wss://api.devnet.solana.com}
   PROGRAM_ID: ${PROGRAM_ID:-}
   USDC_MINT: ${USDC_MINT:-}
-  DATABASE_URL: postgres://groundgraph:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}@postgres:5432/groundgraph
+  DATABASE_URL: postgres://groundgraph:${POSTGRES_PASSWORD}@postgres:5432/groundgraph
   REDIS_URL: redis://redis:6379
   RUN_MIGRATIONS: "true"
   DEMO_MODE: ${DEMO_MODE:-false}
@@ -31,7 +31,7 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: groundgraph
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: groundgraph
     volumes:
       - pgdata:/var/lib/postgresql/data
@@ -112,7 +112,7 @@ services:
       postgres: { condition: service_healthy }
       api: { condition: service_started }
     environment:
-      DATABASE_URL: postgres://groundgraph:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}@postgres:5432/groundgraph
+      DATABASE_URL: postgres://groundgraph:${POSTGRES_PASSWORD}@postgres:5432/groundgraph
       # synthetic needs DEMO_MODE=true (rows are labelled "Demo data"); helius needs HELIUS_API_KEY (free tier, no card).
       SCORER_SOURCE: ${SCORER_SOURCE:-synthetic}
       DEMO_MODE: ${DEMO_MODE:-false}
