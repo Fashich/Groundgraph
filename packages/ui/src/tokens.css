@@ -1,0 +1,196 @@
+/* Groundgraph design tokens. Single source of truth for color, type, shape and motion.
+   Imported by apps/web after `@import "tailwindcss"`, so the @theme block below becomes Tailwind utilities
+   (bg-panel, text-above, font-display, animate-gg-in, ...) and every token is also a plain CSS variable. */
+
+@theme {
+  /* surfaces */
+  --color-bg: #07060c;
+  --color-panel: #0d0a17;
+  --color-panel-2: #0e0b18;
+  /* brand and accents */
+  --color-brand: #5b2c8f;
+  --color-brand-hover: #6e38ab;
+  --color-violet: #9b6bff;
+  --color-violet-light: #b48cff;
+  --color-violet-pale: #d8c7ff;
+  /* outcome colors: ABOVE is cyan, BELOW is magenta */
+  --color-above: #2ce6d6;
+  --color-above-text: #bff7f1;
+  --color-below: #e046f0;
+  --color-below-text: #f6c9fb;
+  --color-blue: #5fa8f0;
+  /* feature palette */
+  --color-whale: #e046f0;
+  --color-timing: #b65cf5;
+  --color-hit: #9b6bff;
+  --color-central: #5fa8f0;
+  --color-lead: #2ce6d6;
+  /* text */
+  --color-ink: #f4f2fa;
+  --color-body: #edebf5;
+  --color-ink-2: #d9d6e6;
+  --color-muted: #b9b4cc;
+  --color-dim: #9a95ae;
+  --color-faint: #8f8aa6;
+  /* graph */
+  --color-crowd: #967de8;
+
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-sans: 'Manrope', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --radius-pill: 999px;
+  --radius-control: 12px;
+  --radius-card: 20px;
+  --radius-panel: 24px;
+  --radius-hero: 28px;
+
+  --ease-soft: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  --animate-gg-in: ggIn 0.45s ease backwards;
+  --animate-gg-sheet: ggSheet 0.3s ease backwards;
+  --animate-gg-tos: ggTos 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+  --animate-gg-pulse: ggPulse 2.4s infinite;
+  --animate-gg-pulse-fast: ggPulse 1.6s infinite;
+  --animate-gg-spin: ggSpin 0.9s linear infinite;
+  --animate-gg-shimmer: ggShimmer 1.4s linear infinite;
+  --animate-gg-flow: ggFlow 3s linear infinite;
+}
+
+:root {
+  --gg-surface: linear-gradient(180deg, rgba(28, 22, 44, 0.62), rgba(14, 11, 24, 0.62));
+  --gg-surface-strong: linear-gradient(180deg, rgba(34, 26, 54, 0.96), rgba(16, 13, 28, 0.96));
+  --gg-overlay: linear-gradient(180deg, rgba(30, 24, 48, 0.98), rgba(14, 11, 24, 0.98));
+  --gg-border: rgba(155, 107, 255, 0.14);
+  --gg-border-hover: rgba(155, 107, 255, 0.4);
+  --gg-glass: rgba(7, 6, 12, 0.76);
+  --gg-glow-brand: 0 0 24px rgba(91, 44, 143, 0.55);
+  --gg-glow-brand-lg: 0 0 40px rgba(91, 44, 143, 0.6);
+  --gg-above-bg: rgba(44, 230, 214, 0.08);
+  --gg-above-border: rgba(44, 230, 214, 0.3);
+  --gg-below-bg: rgba(224, 70, 240, 0.08);
+  --gg-below-border: rgba(224, 70, 240, 0.3);
+  --gg-flash-glow: 0 0 18px rgba(44, 230, 214, 0.85);
+  --gg-flash-glow-violet: 0 0 14px rgba(155, 107, 255, 0.95);
+  --gg-gradient-brand: linear-gradient(90deg, #2ce6d6, #9b6bff 55%, #e046f0);
+  --gg-gradient-bar: linear-gradient(90deg, #9b6bff, #2ce6d6);
+  --gg-focus: #2ce6d6;
+}
+
+/* ---------- keyframes (every animation communicates state) ---------- */
+@keyframes ggIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes ggPulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(44, 230, 214, 0.6); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(44, 230, 214, 0); }
+}
+@keyframes ggSpin { to { transform: rotate(360deg); } }
+@keyframes ggShimmer { from { background-position: 150% 0; } to { background-position: -50% 0; } }
+@keyframes ggSheet { from { opacity: 0; transform: translateY(24px) scale(0.98); } to { opacity: 1; transform: none; } }
+@keyframes ggFlow { from { background-position: 0 0; } to { background-position: 0 200%; } }
+@keyframes ggTos { from { opacity: 0; transform: translateY(18px) scale(0.96); } to { opacity: 1; transform: none; } }
+
+/* ---------- base ---------- */
+@layer base {
+  html, body { margin: 0; background: var(--color-bg); color: var(--color-body); -webkit-font-smoothing: antialiased; }
+  body { font: 400 15px/1.55 var(--font-sans); min-height: 100vh; }
+  *, *::before, *::after { box-sizing: border-box; }
+  a { color: var(--color-violet-light); text-decoration: none; transition: color 0.2s; }
+  a:hover { color: var(--color-above); }
+  input, select, textarea, button { font: inherit; color: inherit; }
+  input[type='range'] { accent-color: var(--color-above); }
+  ::selection { background: rgba(155, 107, 255, 0.4); }
+  :focus-visible { outline: 2px solid var(--gg-focus); outline-offset: 2px; border-radius: 6px; }
+  button { cursor: pointer; }
+  button:disabled { cursor: not-allowed; }
+  h1, h2, h3, p { margin: 0; }
+  * { scrollbar-width: thin; scrollbar-color: rgba(155, 107, 255, 0.4) transparent; }
+  *::-webkit-scrollbar { width: 8px; height: 8px; }
+  *::-webkit-scrollbar-track { background: transparent; }
+  *::-webkit-scrollbar-thumb { border-radius: 8px; border: 2px solid transparent; background: linear-gradient(180deg, #2ce6d6, #9b6bff, #e046f0) padding-box; }
+  @media (pointer: fine) {
+    html { scrollbar-width: none; }
+    html::-webkit-scrollbar { width: 0; height: 0; display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  }
+}
+
+/* ---------- design vocabulary ---------- */
+@layer components {
+  .gg-card { background: var(--gg-surface); border: 1px solid var(--gg-border); border-radius: 20px; }
+  .gg-card-strong { background: var(--gg-surface-strong); border: 1px solid rgba(155, 107, 255, 0.24); border-radius: 22px; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35); }
+  .gg-overlay { background: var(--gg-overlay); border: 1px solid rgba(155, 107, 255, 0.28); box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6), 0 0 80px rgba(91, 44, 143, 0.25); }
+  .gg-hover-lift { transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s; }
+  .gg-hover-lift:hover { transform: translateY(-3px); border-color: var(--gg-border-hover); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(155, 107, 255, 0.1); }
+
+  .gg-eyebrow { font: 500 11px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-faint); }
+  .gg-section-label { font: 500 12px/1 var(--font-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-violet); }
+  .gg-mono { font-family: var(--font-mono); }
+  .gg-display { font-family: var(--font-display); letter-spacing: -0.03em; }
+
+  /* buttons */
+  .gg-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--font-sans); font-weight: 600; line-height: 1; white-space: nowrap; border-radius: 999px; border: 1px solid transparent; background: transparent; color: var(--color-body); transition: background 0.2s, box-shadow 0.2s, border-color 0.2s, transform 0.2s, opacity 0.2s; }
+  .gg-btn[aria-disabled='true'], .gg-btn:disabled { opacity: 0.5; }
+  .gg-btn-primary { border-color: rgba(180, 140, 255, 0.45); background: var(--color-brand); color: #fff; box-shadow: var(--gg-glow-brand); }
+  .gg-btn-primary:hover:not(:disabled) { background: var(--color-brand-hover); box-shadow: 0 0 32px rgba(123, 63, 190, 0.7); }
+  .gg-btn-ghost { border-color: rgba(237, 235, 245, 0.18); color: var(--color-body); }
+  .gg-btn-ghost:hover:not(:disabled) { border-color: rgba(44, 230, 214, 0.5); }
+  .gg-btn-quiet { border-color: rgba(237, 235, 245, 0.16); color: var(--color-body); }
+  .gg-btn-quiet:hover:not(:disabled) { border-color: rgba(155, 107, 255, 0.5); }
+  .gg-btn-above { border-color: var(--gg-above-border); background: var(--gg-above-bg); color: var(--color-above-text); }
+  .gg-btn-above:hover:not(:disabled) { background: rgba(44, 230, 214, 0.18); }
+  .gg-btn-below { border-color: var(--gg-below-border); background: var(--gg-below-bg); color: var(--color-below-text); }
+  .gg-btn-below:hover:not(:disabled) { background: rgba(224, 70, 240, 0.18); }
+  .gg-btn-icon { width: 40px; height: 40px; border-radius: 10px; border: 1px solid rgba(155, 107, 255, 0.2); background: transparent; color: var(--color-muted); font-size: 16px; display: inline-grid; place-items: center; transition: border-color 0.2s; }
+  .gg-btn-icon:hover { border-color: rgba(155, 107, 255, 0.5); }
+
+  /* segmented control (tabs / toggles) */
+  .gg-seg { display: flex; align-items: center; padding: 3px; border-radius: 999px; border: 1px solid rgba(155, 107, 255, 0.18); }
+  .gg-seg-label { padding: 0 8px 0 10px; font: 500 10px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-faint); }
+  .gg-seg-btn { height: 28px; padding: 0 12px; border-radius: 999px; border: none; background: transparent; color: var(--color-dim); font: 500 12px/1 var(--font-sans); white-space: nowrap; transition: background 0.2s, color 0.2s; }
+  .gg-seg-btn[data-on='true'], .gg-seg-btn[aria-selected='true'], .gg-seg-btn[aria-pressed='true'] { background: rgba(155, 107, 255, 0.2); color: #fff; }
+  .gg-seg-btn:hover:not([data-on='true']):not([aria-selected='true']) { color: var(--color-body); }
+
+  /* chips */
+  .gg-chip { flex: none; display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid rgba(155, 107, 255, 0.16); background: transparent; color: var(--color-muted); font: 500 13px/1 var(--font-sans); white-space: nowrap; transition: all 0.2s; }
+  .gg-chip:hover { border-color: rgba(155, 107, 255, 0.4); }
+  .gg-chip[data-on='true'], .gg-chip[aria-pressed='true'] { border-color: rgba(155, 107, 255, 0.55); background: rgba(155, 107, 255, 0.18); color: #fff; }
+  .gg-chip-cyan[data-on='true'], .gg-chip-cyan[aria-pressed='true'] { border-color: rgba(44, 230, 214, 0.5); background: rgba(44, 230, 214, 0.1); color: #fff; }
+
+  /* pills */
+  .gg-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06); font: 500 12px/1 var(--font-mono); color: var(--color-muted); font-variant-numeric: tabular-nums; }
+
+  /* fields */
+  .gg-field { display: flex; align-items: center; gap: 8px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(155, 107, 255, 0.24); background: rgba(255, 255, 255, 0.03); transition: border-color 0.2s, box-shadow 0.3s; }
+  .gg-field:focus-within { border-color: rgba(44, 230, 214, 0.7); box-shadow: 0 0 0 3px rgba(44, 230, 214, 0.16); }
+  .gg-field[data-invalid='true'] { border-color: rgba(224, 70, 240, 0.5); }
+  .gg-field input { flex: 1; min-width: 0; border: none; background: transparent; outline: none; }
+  .gg-field input:focus-visible { outline: none; }
+
+  /* switch */
+  .gg-switch { flex: none; position: relative; width: 36px; height: 20px; border-radius: 999px; background: rgba(255, 255, 255, 0.14); transition: background 0.2s; }
+  .gg-switch::after { content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: left 0.2s; }
+  .gg-switch[data-on='true'] { background: var(--color-above); }
+  .gg-switch[data-on='true']::after { left: 18px; }
+
+  /* checkbox */
+  .gg-check { flex: none; width: 20px; height: 20px; border-radius: 6px; border: 1px solid rgba(155, 107, 255, 0.45); display: grid; place-items: center; color: #07060c; font-size: 13px; font-weight: 700; transition: all 0.2s; }
+  .gg-check[data-on='true'] { border-color: var(--color-above); background: var(--color-above); }
+
+  /* live dot */
+  .gg-dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--color-above); animation: ggPulse 2.4s infinite; }
+  .gg-dot-below { background: var(--color-below); animation-duration: 1.6s; }
+
+  /* skeleton shimmer */
+  .gg-skeleton { border-radius: 20px; border: 1px solid rgba(155, 107, 255, 0.1); background: linear-gradient(100deg, rgba(28, 22, 44, 0.5) 30%, rgba(64, 46, 104, 0.5) 50%, rgba(28, 22, 44, 0.5) 70%); background-size: 300% 100%; animation: ggShimmer 1.4s linear infinite; }
+
+  /* price / score flashes (0.9s) */
+  .gg-flash { color: #fff !important; text-shadow: var(--gg-flash-glow); }
+  .gg-flash-violet { color: #fff !important; text-shadow: var(--gg-flash-glow-violet); }
+  .gg-flash-target { transition: color 0.6s, text-shadow 0.6s; }
+
+  .gg-no-scrollbar { scrollbar-width: none; }
+  .gg-no-scrollbar::-webkit-scrollbar { display: none; }
+  .gg-text-gradient { background: var(--gg-gradient-brand); -webkit-background-clip: text; background-clip: text; color: transparent; }
+}
